@@ -1,56 +1,51 @@
 const Welcome = React.createClass({
   render: function() {
-    <div>
-      <h1>Hello React</h1>
-      <p>Let's count stuff!</p>
-    </div>
+    const message = this.props.message;
+    return (
+      <div>
+        <h1>{message}</h1>
+        <p>Let's count stuff!</p>
+      </div>
+    )
   }
 })
 
-const Root = React.createClass({
-
+const Counter = React.createClass({
   getInitialState: function() {
     return {
-      counters: {
-        one: 0,
-        two: 0,
-      },
-      something: 'This is awesome!'
+      count: 0
     };
   },
 
-  addCount: function(event) {
-    const counterID = event.target.id;
-    const counters = Object.assign({}, this.state.counters);
-    counters[counterID]++;
-    this.setState({ counters });
+  render: function() {
+    const number = this.props.number;
+    return (
+      <div>
+        <h3>Counter {number}: { this.state.count }</h3>
+        <button onClick={ () => this.setState({ count: this.state.count + 1 }) }>+</button>
+        <button onClick={ () => this.setState({ count: this.state.count - 1 }) }>-</button>
+      </div>
+    );
   },
+})
 
-  subtractCount: function(arg, event) {
-    const counterID = arg;
-    if (this.state.counters[counterID] > 0) {
-      const counters = Object.assign({}, this.state.counters);
-      counters[counterID]--;
-      this.setState({ counters });
-    }
+const Root = React.createClass({
+  getInitialState: function() {
+    return {
+      counter: 1,
+    };
   },
-
-
 
   render: function() {
+    let message = 'Hello World';
+    let counterID = 1;
     return(
       <div>
-        <h1>Welcome to the Root Component!</h1>
-        <p>Let's count stuff</p>
+        <Welcome message={message} />
 
-
-        <h3>Counter 1: { this.state.counters.one }</h3>
-        <button id='one' onClick={ this.addCount }>+</button>
-        <button onClick={ this.subtractCount.bind(this, 'one') }>-</button>
-
-        <h3>Counter 2: { this.state.counters.two }</h3>
-        <button id='two' onClick={ this.addCount }>+</button>
-        <button onClick={ this.subtractCount.bind(this, 'two') }>-</button>
+        <Counter number={counterID++}/>
+        <Counter number={counterID++}/>
+        <Counter number={counterID++}/>
       </div>
     )
   },
