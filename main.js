@@ -1,29 +1,24 @@
 const Welcome = React.createClass({
   render: function() {
-    const message = this.props.message;
+    const {greeting, info} = this.props
     return (
       <div>
-        <h1>{message}</h1>
-        <p>Let's count stuff!</p>
+        <h1>{greeting}</h1>
+        <p>{info}</p>
       </div>
     )
   }
 })
 
 const Counter = React.createClass({
-  getInitialState: function() {
-    return {
-      count: 0
-    };
-  },
 
   render: function() {
-    const number = this.props.number;
+    const { counterID, addCount, minusCount, count } = this.props
     return (
       <div>
-        <h3>Counter {number}: { this.state.count }</h3>
-        <button onClick={ () => this.setState({ count: this.state.count + 1 }) }>+</button>
-        <button onClick={ () => this.setState({ count: this.state.count - 1 }) }>-</button>
+        <h3>Counter { counterID }: { count }</h3>
+        <button onClick={ addCount }>+</button>
+        <button onClick={ minusCount }>-</button>
       </div>
     );
   },
@@ -32,20 +27,40 @@ const Counter = React.createClass({
 const Root = React.createClass({
   getInitialState: function() {
     return {
-      counter: 1,
+      count: 0,
+      messages: [],
     };
   },
 
+  addCount: function() {
+    this.setState({ count: this.state.count + 1 });
+  },
+
+  minusCount: function() {
+    this.setState({ count: this.state.count - 1 });
+  },
+
   render: function() {
-    let message = 'Hello World';
-    let counterID = 1;
+    let message = {
+      greeting: 'Hello World',
+      info: `Let's count stuff!`,
+    };
+
+    const counterProps = {
+      addCount: this.addCount,
+      minusCount: this.minusCount,
+      count: this.state.count,
+    }
+
     return(
       <div>
-        <Welcome message={message} />
+        <Welcome {...message} />
 
-        <Counter number={counterID++}/>
-        <Counter number={counterID++}/>
-        <Counter number={counterID++}/>
+        <MessageForm />
+
+        <Counter counterID='1' {...counterProps} />
+        <Counter counterID='2' {...counterProps} />
+        <Counter counterID='3' {...counterProps} />
       </div>
     )
   },
